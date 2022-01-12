@@ -15,18 +15,22 @@ import com.springboot.bankapp.model.Role;
 import com.springboot.bankapp.model.UserInfo;
 import com.springboot.bankapp.repository.CustomerRepository;
 import com.springboot.bankapp.repository.RoleRepository;
-
-
+import com.springboot.bankapp.repository.UserRepository;
 
 @Service
 public class CustomerService {
+
 	@Autowired
 	private CustomerRepository customerRepository;
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private UserRepository userRepository; 
 	
 	public Customer postCustomer(Customer customer) {
 		 //generate 10 digit account number
@@ -50,19 +54,27 @@ public class CustomerService {
 		//Create a Role and insert it in DB 
 		Role role = new Role(); 
 		role.setName("USER");
-		role = roleRepository.save(role); 
-		//Create List of Role
-		List<Role> list = new ArrayList<>();
-		list.add(role); 
-
-		//Attach the role list to User
-		user.setRoles(list);
-
-
+		 
 		user.setRole(role);
 		customer.setUserInfo(user);
-
-
 		return customerRepository.save(customer);
 	}
+
+	public void deleteCustomer(Long id) {
+		customerRepository.deleteById(id);
+		
+	}
+
+	public Customer getCustomerById(Long id) {
+		 
+		return customerRepository.getById(id);
+	}
+
+	public UserInfo getUserByName(String name) {
+		
+		return userRepository.findByUsername(name);
+	}
+	
+	
+	
 }
