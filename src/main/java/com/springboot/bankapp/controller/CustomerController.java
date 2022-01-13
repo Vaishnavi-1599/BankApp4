@@ -27,6 +27,11 @@ public class CustomerController {
 		return customerService.postCustomer(customer);
 	}
 	
+	@DeleteMapping("/customer/{id}")
+	public void deleteCustomer(@PathVariable("id") Long id) {
+		customerService.deleteCustomer(id);  
+	}
+		
 	@GetMapping("/user")
 	public UserInfo getUser(Principal principal) {
 		UserInfo user = customerService.getUserByName(principal.getName());
